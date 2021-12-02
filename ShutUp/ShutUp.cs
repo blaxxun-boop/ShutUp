@@ -81,8 +81,15 @@ namespace ShutUp
 							level = LogLevel.Info;
 							break;
 					}
-					
-					if (logLevel.TryGetValue(new StackFrame(8).GetMethod().DeclaringType.Assembly, out ConfigEntry<LogLevel> assemblyLogLevel))
+
+					MethodBase methodBase = new StackFrame(8).GetMethod();
+
+					if (methodBase == null || methodBase.DeclaringType == null)
+					{
+						return true;
+					}
+
+					if (logLevel.TryGetValue(methodBase.DeclaringType.Assembly, out ConfigEntry<LogLevel> assemblyLogLevel))
 					{
 						return (assemblyLogLevel.Value & level) != 0;
 					}
