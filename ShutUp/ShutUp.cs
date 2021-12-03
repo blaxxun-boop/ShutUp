@@ -50,7 +50,7 @@ namespace ShutUp
 		{
 			private static void Prefix()
 			{
-				ConfigEntry<LogLevel> valheimLogLevel = Config.Bind("General", "Valheim", LogLevel.Warning);
+				ConfigEntry<LogLevel> valheimLogLevel = Config.Bind("General", "Valheim", LogLevel.Fatal | LogLevel.Error | LogLevel.Warning);
 				foreach (Assembly valheimAssembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => new[] { "assembly_valheim", "assembly_guiutils" }.Contains(a.GetName().Name)))
 				{
 					logLevel[valheimAssembly] = valheimLogLevel;
@@ -102,7 +102,7 @@ namespace ShutUp
 			{
 				private static void Postfix(BaseUnityPlugin __instance)
 				{
-					logLevel[__instance.GetType().Assembly] = Config.Bind("General", __instance.Info.Metadata.Name, LogLevel.Warning);
+					logLevel[__instance.GetType().Assembly] = Config.Bind("General", __instance.Info.Metadata.Name, LogLevel.Fatal | LogLevel.Error | LogLevel.Warning);
 				}
 			}
 		}
