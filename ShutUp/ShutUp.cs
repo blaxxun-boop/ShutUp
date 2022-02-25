@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
@@ -102,7 +103,8 @@ namespace ShutUp
 			{
 				private static void Postfix(BaseUnityPlugin __instance)
 				{
-					logLevel[__instance.GetType().Assembly] = Config.Bind("General", __instance.Info.Metadata.Name, LogLevel.Fatal | LogLevel.Error | LogLevel.Warning);
+					Regex regex = new("['[\"\\]]");
+					logLevel[__instance.GetType().Assembly] = Config.Bind("General", regex.Replace(__instance.Info.Metadata.Name, ""), LogLevel.Fatal | LogLevel.Error | LogLevel.Warning);
 				}
 			}
 		}
